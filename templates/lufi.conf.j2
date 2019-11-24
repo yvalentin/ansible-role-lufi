@@ -51,6 +51,14 @@
         {{ "pwd      => '%s'," % lufi_pgdb.pwd      if lufi_pgdb.pwd      else "" }}
     },
 {% endif %}
+{% if lufi_db_type is defined and lufi_db_type == 'mysql' and lufi_mysqldb is mapping %}
+    mysqldb => {
+        {{ "database => '%s'," % lufi_mysqldb.database | default("") }}
+        {{ "host     => '%s'," % lufi_mysqldb.host     | default("") }}
+        {{ "user     => '%s'," % lufi_mysqldb.user     | default("") }}
+        {{ "pwd      => '%s'," % lufi_mysqldb.pwd      | default("") }}
+    },
+{% endif %}
 {{ "    upload_dir => '%s'," % lufi_upload_dir if lufi_upload_dir is defined else "" }}
 {% if lufi_ldap is mapping %}
     ldap => {
