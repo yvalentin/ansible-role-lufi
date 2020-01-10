@@ -6,7 +6,7 @@
 
 - name: Lufi | Install essential packages
   apt: name="{{ item }}" state=present
-  with_items:
+  loop:
     - build-essential
     - git
     - libssl-dev

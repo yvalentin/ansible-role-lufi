@@ -2,12 +2,12 @@
 
 - name: Lufi | Checkout git repository
   git:
-    repo: https://framagit.org/noplanman/lufi.git
+    repo: "{{lufi_git_repo}}"
     dest: "{{ lufi_working_dir }}"
     update: "{{ lufi_keep_updated }}"
     force: yes
   register: lufi_git_updated
-  changed_when: lufi_git_updated.after != lufi_git_updated.before
+  changed_when: lufi_git_updated.changed
   notify: restart lufi
 
 - name: Lufi | Copy config
@@ -29,7 +29,7 @@
   command: carton update
   args:
     chdir: "{{ lufi_working_dir }}"
-  when: lufi_app_installed.changed or lufi_keep_updated
+  when: lufi_keep_updated
   register: lufi_app_updated
   changed_when: "'Successfully installed' in lufi_app_updated.stdout"
   notify: restart lufi
@@ -40,5 +40,16 @@
     state: directory
     owner: "{{ lufi_user }}"
     group: "{{ lufi_group }}"
+    mode: 0755
+    recurse: yes
+  changed_when: no
+
+- name: Lufi | Set ownership on files directory
+  file:
+    path: "{{ lufi_working_dir }}/files"
+    state: directory
+    owner: "{{ lufi_user }}"
+    group: "{{ lufi_group }}"
+    mode: 0775
     recurse: yes
   changed_when: no

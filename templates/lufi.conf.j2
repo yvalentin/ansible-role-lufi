@@ -12,8 +12,10 @@
         workers => {{ lufi_workers }},
         clients => {{ lufi_clients }},
     },
+    report => '{{ lufi_mail_sender }}',
     contact => '{{ lufi_contact }}',
     secret => {{ lufi_secrets | to_json }},
+    instance_name => '{{ lufi_instance_name | default("Lufi") }}',
 {{ "    theme => '%s',"             % lufi_theme             if lufi_theme is defined             else "" }}
 {{ "    length => %s,"              % lufi_url_length        if lufi_url_length is defined        else "" }}
 {{ "    provis_step => %s,"         % lufi_provis_step       if lufi_provis_step is defined       else "" }}
@@ -33,7 +35,7 @@
 {% endif %}
 {{ "    prefix => '%s',"        % lufi_prefix                    if lufi_prefix is defined          else "" }}
 {{ "    allowed_domains => %s," % lufi_allowed_domains | to_json if lufi_allowed_domains is defined else "" }}
-{{ "    fixed_domain => '%s',"  % lufi_fixed_domain              if lufi_fixed_domain is defined    else "" }}
+{#{{ "    fixed_domain => '%s',"  % lufi_fixed_domain              if lufi_fixed_domain is defined    else "" }}#}
 {% if lufi_mail is mapping %}
     mail => {
         {{ "how     => '%s'," % lufi_mail.how               if lufi_mail.how     else "" }}
